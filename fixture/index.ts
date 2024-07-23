@@ -1,6 +1,9 @@
 import { randomUUID } from "crypto";
 import { Application } from "../app";
 import {test as pwTest} from "@playwright/test";
+import { count } from "console";
+import { Country } from "../data/enum/country";
+import { UserModel } from "../data/models/user-model";
 
 type UserDataType = {
     isSubscribed: boolean;
@@ -11,9 +14,10 @@ type UserDataType = {
 };
 
 interface UserContext {
-    userModel: UserDataType;
+    userModel: UserModel;
     createdUser: any;
     showUserInfo: any;
+    useHedlessLogin: any;
 }
 
 export const test = pwTest.extend<
@@ -36,21 +40,22 @@ export const test = pwTest.extend<
   newUser: async ({ app }, use) => {
     const userModel = {
       isSubscribed: false,
-      email: `test+${randomUUID()}@test.com`,
-      firstName: "test",
-      lastName: "test",
+      username: "test",
       password: "admin1234",
+      email: `test+${randomUUID()}@test.com`,
+      age: 25,
+      country: Country.USA,
     };
 
     const createdUser = await app.api.auth.register(userModel);
-    await app.headlessLogin(userModel);
-    await app.home.open();
 
+    const useHedlessLogin = 
+        await app.headlessLogin(createdUser.token)
+        await app.signUp.open();
+    
     const showUserInfo = await console.log(`User: ${userModel.email} created`);
 
-    const newMethodInnerForFixtures = {key: 'value'};
-
-    await use({ userModel, createdUser, showUserInfo});
+    await use({ userModel, createdUser, showUserInfo, useHedlessLogin});
   },
 
 });

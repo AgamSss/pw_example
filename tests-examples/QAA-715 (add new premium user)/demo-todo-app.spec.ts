@@ -1,8 +1,10 @@
 import { test, expect, type Page } from '@playwright/test';
-
+import { token, user } from './data-qaa715';
 test.beforeEach(async ({ page }) => {
   await page.goto('https://demo.playwright.dev/todomvc');
 });
+
+fill(user.email, user.password);
 
 const TODO_ITEMS = [
   'buy some cheese',

@@ -16,10 +16,16 @@ export class SignIn extends AppPage {
         await expect(this.passwordInput).toBeVisible();
     }
 
-    async signIn(user: { email: string, password: string }) {
+    async signIn(user: User|UserModel){ {
         await this.expectLoaded();
-        await this.emailInput.fill(user.email)
-        await this.passwordInput.fill(user.password)
+        await this.emailInput.fill(user.email);
+        await this.passwordInput.fill(user.password);
+        if (user.country){
+            await this.page.getByRole('combobox').selectOption({label: user.country})
+        }
+        if (user.age){
+            await this.page.getByRole('spinbutton').fill(user.age.toString())
+        }
         await this.signInButton.click()
     }
 
@@ -28,4 +34,5 @@ export class SignIn extends AppPage {
         await this.header.expectLoaded()
         await this.header.openCart()
     }
+
 }

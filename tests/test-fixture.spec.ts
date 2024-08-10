@@ -1,8 +1,9 @@
 import {test} from '../fixture';
 import { expect } from '@playwright/test';
-import { createARandomUser } from '../data/user-data';
+import { createARandomUser, generateOnlyRequiredUserData } from '../data/user-data';
 
 const newUserData = createARandomUser();
+const userWithREquiredData = generateOnlyRequiredUserData();
 
 test('has title', async ({ app }) => {
   await app.signIn.open();
@@ -23,3 +24,5 @@ test('get started link', async ({ app: {signIn, contacts}, newUser }) => {
   await newUser.createdUser(newUserData)
 await expect(signIn.header).toContain(newUserData.username);
 });
+
+

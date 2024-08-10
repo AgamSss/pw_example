@@ -28,6 +28,6 @@ export interface UserCreatedResponse {
         email: string;
         firstName: string;
         lastName: string;
-        cars: string[];
+        //cars: string[];
     }
 }
